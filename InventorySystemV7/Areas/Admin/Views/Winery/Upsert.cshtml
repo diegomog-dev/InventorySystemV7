@@ -1,0 +1,83 @@
+﻿@model InventorySystemV7.Models.Winery
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "Crear Bodega";
+}
+
+<form method="post">
+    <div style="padding-left:15%; padding-right:15%; padding-bottom:inherit.4rem;">
+        <div class="row border-0">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+        @if (Model.Id != 0)
+        {
+            // Update
+            title = "Actualizar Bodega";
+            <input type="hidden" asp-for="Id" id="id"/>
+        }
+        <div class="col-12 border-bottom p-0">
+            <h2 class="text-primary">@title</h2>
+        </div>
+
+        <div class="row mb-2 mt-2">
+            <div class="form-group col-md-6">
+                <label>Nombre</label>
+                <input type="text" asp-for="Name" class="form-control" placeholder="Nombre de la Bodega" id="name"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-2 mt-2">
+            <div class="form-group col-md-6">
+                <label>Descipción</label>
+                <input type="text" asp-for="Description" class="form-control" placeholder="Descripción de la Bodega" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-2 mt-2">
+            <div class="form-group col-md-6">
+                <label>Estado</label>
+                <select asp-for="State" class="form-select">
+                    <option value=true>Activo</option>
+                    <option value=false>Inactivo</option>
+                </select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div>
+            @if(Model.Id != 0)
+            {
+                <partial name="_ButtonUpdateBack" model="Model.Id" />
+            }
+            else
+            {
+                <partial name="_ButtonCreateBack" />
+            }
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("name").addEventListener('change', function () {
+            nameValidation();
+        });
+
+        function nameValidation() {
+            var url = '@Url.Content("~/")' + "Admin/Winery/NameValidation";
+            var id = '#id';
+            var name = '#name';
+
+            $.getJSON(url, { id: $(id).val(), name: $(name).val() }, function (data) {
+                $.each(data, function (key, value) {
+                    if (value) {
+                        var name = document.getElementById("name");
+                        swal("Error", "Este nombre ya existe, por favor intentelo de nuevo.", "error");
+                    }
+                });
+            });
+        }
+    </script>
+}
