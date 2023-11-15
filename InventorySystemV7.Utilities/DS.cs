@@ -8,5 +8,7 @@ namespace InventorySystemV7.Utilities
 {
     public static class DS
     {
+        public const string Success = "Exitosa";
+        public const string Error = "Error";
     }
 }
