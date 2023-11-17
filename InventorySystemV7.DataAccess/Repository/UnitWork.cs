@@ -12,11 +12,13 @@ namespace InventorySystemV7.DataAccess.Repository
     {
         private readonly ApplicationDbContext _context;
         public IWineryRepository Winery {  get; private set; }
+        public ICategoryRepository Category { get; private set; }
 
         public UnitWork(ApplicationDbContext context)
         {
             _context = context;
             Winery = new WineryRepository(context);
+            Category = new CategoryRepository(context);
         }
 
         public void Dispose()       // para liberar todos los repositorios o recursos no necesarios
