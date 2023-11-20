@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace InventorySystemV7.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class BrandController : Controller
     {
         private readonly IUnitWork _unitWork;
 
-        public CategoryController(IUnitWork unitWork)
+        public BrandController(IUnitWork unitWork)
         {
             _unitWork = unitWork;
         }
@@ -21,77 +21,77 @@ namespace InventorySystemV7.Areas.Admin.Controllers
 
         public async Task<IActionResult> Upsert(int? id)
         {
-            Category category = new Category();
+            Brand brand = new Brand();
             if (id == null)
             {
-                // Create new Winery
-                category.State = true;
-                return View(category);
+                // Create new Brand
+                brand.State = true;
+                return View(brand);
             }
             else
             {
-                // Update the exist winery
-                category = await _unitWork.Category.GetById(id.GetValueOrDefault());
-                if (category == null)
+                // Update the exist Brand
+                brand = await _unitWork.Brand.GetById(id.GetValueOrDefault());
+                if (brand == null)
                 {
                     return NotFound();
                 }
 
-                return View(category);
+                return View(brand);
             }
         }
 
         /* Insert and update */
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(Category category)
+        public async Task<IActionResult> Upsert(Brand brand)
         {
             if(ModelState.IsValid)
             {
-                if(category.Id == 0)
+                if(brand.Id == 0)
                 {
-                    await _unitWork.Category.Add(category);
-                    TempData[DS.Success] = "Categoria creada exitosamente.";
+                    await _unitWork.Brand.Add(brand);
+                    TempData[DS.Success] = "Marca creada exitosamente.";
                 }
                 else
                 {
-                    _unitWork.Category.Update(category);
-                    TempData[DS.Success] = "Categoria actualizada exitosamente.";
+                    _unitWork.Brand.Update(brand);
+                    TempData[DS.Success] = "Marca actualizada exitosamente.";
                 }
 
                 await _unitWork.Save();
                 return RedirectToAction(nameof(Index));
             }
-            TempData[DS.Error] = "Error al guardar la Categoria.";
-            return View(category);
+            TempData[DS.Error] = "Error al guardar la Marca.";
+            return View(brand);
         }
 
         #region API
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var all = await _unitWork.Category.GetAll();
+            var all = await _unitWork.Brand.GetAll();
             return Json(new {data = all});
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var categoryDb = await _unitWork.Category.GetById(id);
-            if(categoryDb == null)
+            var brandDb = await _unitWork.Brand.GetById(id);
+            if(brandDb == null)
             {
-                return Json(new {success = false, message = "Error al borrar la Categoria"});
+                return Json(new {success = false, message = "Error al borrar la Marca"});
             }
-            _unitWork.Category.Delete(categoryDb);
+            _unitWork.Brand.Delete(brandDb);
             await _unitWork.Save();
-            return Json(new { success = true, message = "Categoria eliminada satisfactoriamente" });
+            return Json(new { success = true, message = "Marca eliminada satisfactoriamente" });
         }
 
         [ActionName("NameValidation")]
         public async Task<IActionResult> NameValidation(string name, int id=0)
         {
             bool value = false;
-            var list = await _unitWork.Category.GetAll();
+            var list = await _unitWork.Brand.GetAll();
             if(id == 0)
             {
                 value = list.Any(b => b.Name.ToLower().Trim() == name.ToLower().Trim());
