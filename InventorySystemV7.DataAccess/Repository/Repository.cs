@@ -42,7 +42,7 @@ namespace InventorySystemV7.DataAccess.Repository
             }
             if(addPropierties != null)
             {
-                foreach(var item in addPropierties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach(var item in addPropierties.Split(new char[] { ','}, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(item);        // ejemplo "Categoria,Marca"
                 }

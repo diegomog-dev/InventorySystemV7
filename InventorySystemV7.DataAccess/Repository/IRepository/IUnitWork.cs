@@ -11,6 +11,7 @@ namespace InventorySystemV7.DataAccess.Repository.IRepository
         IWineryRepository Winery {  get; }
         ICategoryRepository Category { get; }
         IBrandRepository Brand { get; }
+        IProductRepository Product { get; }
         Task Save();
     }
 }

@@ -14,6 +14,7 @@ namespace InventorySystemV7.DataAccess.Repository
         public IWineryRepository Winery {  get; private set; }
         public ICategoryRepository Category { get; private set; }
         public IBrandRepository Brand { get; private set; }
+        public IProductRepository Product { get; private set; }
 
         public UnitWork(ApplicationDbContext context)
         {
@@ -21,6 +22,7 @@ namespace InventorySystemV7.DataAccess.Repository
             Winery = new WineryRepository(context);
             Category = new CategoryRepository(context);
             Brand = new BrandRepository(context);
+            Product = new ProductRepository(context);
         }
 
         public void Dispose()       // para liberar todos los repositorios o recursos no necesarios
